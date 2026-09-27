@@ -1,0 +1,126 @@
+<div class="page">
+  <header class="page-header">
+    <h1>{{ 'products.title' | translate }}</h1>
+    @if (auth.isAdmin()) {
+      <button mat-flat-button (click)="openDialog()">
+        <mat-icon>add</mat-icon> {{ 'products.new' | translate }}
+      </button>
+    }
+  </header>
+
+  <div class="filters">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>{{ 'common.search' | translate }}</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput [value]="search()" (input)="onSearch($any($event.target).value)" />
+    </mat-form-field>
+    <mat-slide-toggle [checked]="lowStock()" (change)="onLowStock($event.checked)">
+      {{ 'products.lowStockOnly' | translate }}
+    </mat-slide-toggle>
+  </div>
+
+  <section class="card">
+    @if (products.isLoading()) {
+      <mat-progress-bar mode="indeterminate" />
+    }
+
+    @if (products.error()) {
+      <div class="state">
+        <p>{{ 'common.error' | translate }}</p>
+        <button mat-stroked-button (click)="products.reload()">
+          {{ 'common.retry' | translate }}
+        </button>
+      </div>
+    } @else {
+      <div class="table-wrapper">
+        <table
+          mat-table
+          matSort
+          [matSortActive]="sort().active"
+          [matSortDirection]="sort().direction"
+          (matSortChange)="onSort($event)"
+          [dataSource]="products.value()?.items ?? []"
+        >
+          <ng-container matColumnDef="sku">
+            <th mat-header-cell *matHeaderCellDef>{{ 'products.sku' | translate }}</th>
+            <td mat-cell *matCellDef="let p">
+              <code>{{ p.sku }}</code>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              {{ 'products.name' | translate }}
+            </th>
+            <td mat-cell *matCellDef="let p">{{ p.name }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="supplier">
+            <th mat-header-cell *matHeaderCellDef>{{ 'products.supplier' | translate }}</th>
+            <td mat-cell *matCellDef="let p">{{ p.supplier?.name ?? '—' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              {{ 'products.price' | translate }}
+            </th>
+            <td mat-cell *matCellDef="let p">
+              {{ p.price | currency: 'USD' : 'symbol' : '1.2-2' : language.current() }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="stock">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              {{ 'products.stock' | translate }}
+            </th>
+            <td mat-cell *matCellDef="let p">
+              <span
+                class="chip"
+                [class.danger]="p.stock <= p.minStock"
+                [class.success]="p.stock > p.minStock"
+              >
+                {{ p.stock }}
+              </span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let p" class="actions">
+              <button
+                mat-icon-button
+                (click)="openDialog(p)"
+                [matTooltip]="'common.edit' | translate"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                (click)="remove(p)"
+                [matTooltip]="'common.delete' | translate"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columns()"></tr>
+          <tr mat-row *matRowDef="let row; columns: columns()"></tr>
+          <tr class="mat-row" *matNoDataRow>
+            <td class="state" [attr.colspan]="columns().length">
+              {{ (products.isLoading() ? 'common.loading' : 'common.empty') | translate }}
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <mat-paginator
+        [length]="products.value()?.total ?? 0"
+        [pageIndex]="page()"
+        [pageSize]="pageSize()"
+        [pageSizeOptions]="[5, 10, 25]"
+        (page)="onPage($event)"
+      />
+    }
+  </section>
+</div>

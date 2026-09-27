@@ -1,0 +1,43 @@
+<h2 mat-dialog-title>{{ 'movements.new' | translate }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="form" class="dialog-form" id="movement-form" (ngSubmit)="save()">
+    <mat-button-toggle-group formControlName="type" class="full type-toggle">
+      <mat-button-toggle value="in">
+        <mat-icon>south_west</mat-icon> {{ 'movements.in' | translate }}
+      </mat-button-toggle>
+      <mat-button-toggle value="out">
+        <mat-icon>north_east</mat-icon> {{ 'movements.out' | translate }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>{{ 'movements.product' | translate }}</mat-label>
+      <mat-select formControlName="productId">
+        @for (product of products.value()?.items ?? []; track product.id) {
+          <mat-option [value]="product.id">{{ product.sku }} · {{ product.name }}</mat-option>
+        }
+      </mat-select>
+      @if (selected(); as product) {
+        <mat-hint>{{ 'movements.available' | translate: { stock: product.stock } }}</mat-hint>
+      }
+      <mat-error>{{ 'common.required' | translate }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'movements.quantity' | translate }}</mat-label>
+      <input matInput type="number" min="1" formControlName="quantity" />
+      <mat-error>{{ 'products.positive' | translate }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'movements.reason' | translate }}</mat-label>
+      <input matInput formControlName="reason" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close type="button">{{ 'common.cancel' | translate }}</button>
+  <button mat-flat-button type="submit" form="movement-form" [disabled]="saving()">
+    {{ 'common.save' | translate }}
+  </button>
+</mat-dialog-actions>
