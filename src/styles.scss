@@ -134,3 +134,11 @@ code {
   border-radius: 6px;
   background: var(--mat-sys-surface-container-high);
 }
+
+.type-toggle {
+  margin-bottom: 16px;
+
+  .mat-button-toggle {
+    flex: 1;
+  }
+}
