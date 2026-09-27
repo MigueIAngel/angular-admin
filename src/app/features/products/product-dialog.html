@@ -1,0 +1,63 @@
+<h2 mat-dialog-title>{{ (product ? 'products.editTitle' : 'products.new') | translate }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="form" class="dialog-form" id="product-form" (ngSubmit)="save()">
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'products.sku' | translate }}</mat-label>
+      <input matInput formControlName="sku" />
+      <mat-hint>{{ 'products.skuHint' | translate }}</mat-hint>
+      @if (form.controls.sku.hasError('pattern')) {
+        <mat-error>{{ 'products.skuPattern' | translate }}</mat-error>
+      } @else {
+        <mat-error>{{ 'common.required' | translate }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'products.name' | translate }}</mat-label>
+      <input matInput formControlName="name" />
+      <mat-error>{{ 'common.required' | translate }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>{{ 'products.description' | translate }}</mat-label>
+      <textarea matInput formControlName="description" rows="2"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'products.price' | translate }}</mat-label>
+      <span matTextPrefix>$&nbsp;</span>
+      <input matInput type="number" step="0.01" formControlName="price" />
+      <mat-error>{{ 'products.positive' | translate }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'products.minStock' | translate }}</mat-label>
+      <input matInput type="number" formControlName="minStock" />
+      <mat-error>{{ 'products.min0' | translate }}</mat-error>
+    </mat-form-field>
+
+    @if (!product) {
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'products.initialStock' | translate }}</mat-label>
+        <input matInput type="number" formControlName="stock" />
+        <mat-error>{{ 'products.min0' | translate }}</mat-error>
+      </mat-form-field>
+    }
+
+    <mat-form-field appearance="outline" [class.full]="!!product">
+      <mat-label>{{ 'products.supplier' | translate }}</mat-label>
+      <mat-select formControlName="supplierId">
+        <mat-option [value]="null">{{ 'products.noSupplier' | translate }}</mat-option>
+        @for (supplier of suppliers.value()?.items ?? []; track supplier.id) {
+          <mat-option [value]="supplier.id">{{ supplier.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close type="button">{{ 'common.cancel' | translate }}</button>
+  <button mat-flat-button type="submit" form="product-form" [disabled]="saving()">
+    {{ 'common.save' | translate }}
+  </button>
+</mat-dialog-actions>
