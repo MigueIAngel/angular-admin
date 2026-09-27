@@ -10,6 +10,10 @@ An inventory admin panel built with **Angular 22** and **Angular Material**. It 
 
 ![Dashboard](docs/dashboard.jpg)
 
+**Live demo:** https://angular-admin-demo.onrender.com (demo account `admin@inventory.dev` / `admin123`).
+
+> Hosted on Render's free plan: the first request after a period of inactivity can take up to a minute while the service wakes up. Demo data is reset on every restart.
+
 ## Features
 
 - **Modern Angular**: standalone components, zoneless change detection, signals (`signal`, `computed`, `linkedSignal`), the new control flow (`@if`, `@for`) and `httpResource` for declarative data fetching
