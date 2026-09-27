@@ -37,7 +37,15 @@ export class Movements {
   protected readonly type = signal<MovementType | ''>('');
   protected readonly page = signal(0);
   protected readonly pageSize = signal(10);
-  protected readonly columns = ['date', 'type', 'product', 'quantity', 'stockAfter', 'reason', 'user'];
+  protected readonly columns = [
+    'date',
+    'type',
+    'product',
+    'quantity',
+    'stockAfter',
+    'reason',
+    'user',
+  ];
 
   protected readonly movements = httpResource<Page<StockMovement>>(() => ({
     url: `${environment.apiUrl}/movements`,

@@ -36,8 +36,18 @@ export class Dashboard {
     const data = this.summary.value();
     if (!data) return [];
     return [
-      { label: 'dashboard.products', value: data.totalProducts, icon: 'inventory_2', tone: 'primary' },
-      { label: 'dashboard.suppliers', value: data.totalSuppliers, icon: 'local_shipping', tone: 'tertiary' },
+      {
+        label: 'dashboard.products',
+        value: data.totalProducts,
+        icon: 'inventory_2',
+        tone: 'primary',
+      },
+      {
+        label: 'dashboard.suppliers',
+        value: data.totalSuppliers,
+        icon: 'local_shipping',
+        tone: 'tertiary',
+      },
       { label: 'dashboard.lowStock', value: data.lowStockCount, icon: 'warning', tone: 'error' },
     ];
   });

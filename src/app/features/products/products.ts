@@ -53,10 +53,9 @@ export class Products {
   private readonly notifier = inject(Notifier);
 
   protected readonly search = signal('');
-  private readonly debouncedSearch = toSignal(
-    toObservable(this.search).pipe(debounceTime(300)),
-    { initialValue: '' },
-  );
+  private readonly debouncedSearch = toSignal(toObservable(this.search).pipe(debounceTime(300)), {
+    initialValue: '',
+  });
   protected readonly lowStock = linkedSignal(() => this.lowStockParam() === 'true');
   protected readonly page = signal(0);
   protected readonly pageSize = signal(10);

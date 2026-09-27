@@ -12,7 +12,9 @@ export interface ConfirmDialogData {
   imports: [MatDialogModule, MatButtonModule, TranslatePipe],
   template: `
     <h2 mat-dialog-title>{{ 'common.delete' | translate }}</h2>
-    <mat-dialog-content>{{ 'common.confirmDelete' | translate: { name: data.name } }}</mat-dialog-content>
+    <mat-dialog-content>{{
+      'common.confirmDelete' | translate: { name: data.name }
+    }}</mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-button [mat-dialog-close]="false">{{ 'common.cancel' | translate }}</button>
       <button mat-flat-button class="danger" [mat-dialog-close]="true">
