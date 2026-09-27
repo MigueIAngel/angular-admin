@@ -20,6 +20,20 @@ export interface DailyPoint {
   out: number;
 }
 
+/**
+ * Material system colors are defined with `light-dark()`, which Chart.js cannot parse.
+ * Rendering the variable on a probe element returns the computed `rgb()` value.
+ */
+function resolveColor(variable: string): string {
+  const probe = document.createElement('span');
+  probe.style.color = `var(${variable})`;
+  probe.style.display = 'none';
+  document.body.appendChild(probe);
+  const color = getComputedStyle(probe).color;
+  probe.remove();
+  return color;
+}
+
 @Component({
   selector: 'app-movements-chart',
   template: '<canvas #canvas aria-label="Stock movements chart" role="img"></canvas>',
@@ -48,9 +62,8 @@ export class MovementsChart implements OnDestroy {
   }
 
   private render(points: DailyPoint[], lang: string, dark: boolean): void {
-    const styles = getComputedStyle(document.documentElement);
-    const primary = styles.getPropertyValue('--mat-sys-primary').trim() || '#6d28d9';
-    const tertiary = styles.getPropertyValue('--mat-sys-tertiary').trim() || '#0891b2';
+    const primary = resolveColor('--mat-sys-primary');
+    const tertiary = resolveColor('--mat-sys-tertiary');
     const text = dark ? '#cbd5e1' : '#475569';
     const grid = dark ? 'rgba(148,163,184,0.15)' : 'rgba(100,116,139,0.15)';
     const formatter = new Intl.DateTimeFormat(lang, { weekday: 'short', day: 'numeric' });
