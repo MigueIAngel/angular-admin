@@ -11,7 +11,13 @@ export const routes: Routes = [
     path: '',
     canActivate: [authGuard],
     loadComponent: () => import('./layout/shell').then((m) => m.Shell),
-    children: [{ path: '', pathMatch: 'full', redirectTo: 'dashboard' }],
+    children: [
+      { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./features/dashboard/dashboard').then((m) => m.Dashboard),
+      },
+    ],
   },
   { path: '**', redirectTo: '' },
 ];
