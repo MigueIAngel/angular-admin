@@ -1,0 +1,73 @@
+<div class="login">
+  <button mat-button class="lang" (click)="language.toggle()">
+    <mat-icon>translate</mat-icon>
+    {{ language.current() === 'en' ? 'Español' : 'English' }}
+  </button>
+
+  <section class="panel">
+    @if (loading()) {
+      <mat-progress-bar mode="indeterminate" />
+    }
+    <div class="content">
+      <span class="logo"><mat-icon>deployed_code</mat-icon></span>
+      <h1>{{ 'login.title' | translate }}</h1>
+      <p class="subtitle">{{ 'login.subtitle' | translate }}</p>
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'login.email' | translate }}</mat-label>
+          <input matInput type="email" formControlName="email" autocomplete="username" />
+          <mat-icon matPrefix>mail</mat-icon>
+          @if (form.controls.email.hasError('email')) {
+            <mat-error>{{ 'login.invalidEmail' | translate }}</mat-error>
+          } @else if (form.controls.email.hasError('required')) {
+            <mat-error>{{ 'common.required' | translate }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'login.password' | translate }}</mat-label>
+          <input
+            matInput
+            [type]="hidePassword() ? 'password' : 'text'"
+            formControlName="password"
+            autocomplete="current-password"
+          />
+          <mat-icon matPrefix>lock</mat-icon>
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hidePassword.set(!hidePassword())"
+            aria-label="Toggle password visibility"
+          >
+            <mat-icon>{{ hidePassword() ? 'visibility' : 'visibility_off' }}</mat-icon>
+          </button>
+          @if (form.controls.password.hasError('required')) {
+            <mat-error>{{ 'common.required' | translate }}</mat-error>
+          }
+        </mat-form-field>
+
+        @if (error(); as key) {
+          <p class="error" role="alert">{{ key | translate }}</p>
+        }
+
+        <button mat-flat-button type="submit" [disabled]="loading()">
+          {{ 'login.submit' | translate }}
+        </button>
+      </form>
+
+      <div class="demo">
+        <span>{{ 'login.demo' | translate }}</span>
+        <div>
+          <button mat-stroked-button type="button" (click)="fillDemo('admin')">
+            {{ 'login.useAdmin' | translate }}
+          </button>
+          <button mat-stroked-button type="button" (click)="fillDemo('staff')">
+            {{ 'login.useStaff' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
