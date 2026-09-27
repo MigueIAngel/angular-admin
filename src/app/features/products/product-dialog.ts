@@ -37,10 +37,7 @@ export class ProductDialog {
   );
 
   protected readonly form = inject(NonNullableFormBuilder).group({
-    sku: [
-      this.product?.sku ?? '',
-      [Validators.required, Validators.pattern(/^[A-Z0-9-]{3,40}$/)],
-    ],
+    sku: [this.product?.sku ?? '', [Validators.required, Validators.pattern(/^[A-Z0-9-]{3,40}$/)]],
     name: [this.product?.name ?? '', [Validators.required, Validators.minLength(2)]],
     description: [this.product?.description ?? ''],
     price: [this.product?.price ?? 0, [Validators.required, Validators.min(0.01)]],

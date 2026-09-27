@@ -11,13 +11,17 @@
   } @else if (summary.error()) {
     <div class="card state">
       <p>{{ 'common.error' | translate }}</p>
-      <button mat-stroked-button (click)="summary.reload()">{{ 'common.retry' | translate }}</button>
+      <button mat-stroked-button (click)="summary.reload()">
+        {{ 'common.retry' | translate }}
+      </button>
     </div>
   } @else if (summary.value(); as data) {
     <section class="kpis">
       @for (kpi of kpis(); track kpi.label) {
         <article class="card kpi" [class]="kpi.tone">
-          <span class="kpi-icon"><mat-icon>{{ kpi.icon }}</mat-icon></span>
+          <span class="kpi-icon"
+            ><mat-icon>{{ kpi.icon }}</mat-icon></span
+          >
           <div>
             <p>{{ kpi.label | translate }}</p>
             <strong>{{ kpi.value }}</strong>
@@ -28,7 +32,9 @@
         <span class="kpi-icon"><mat-icon>payments</mat-icon></span>
         <div>
           <p>{{ 'dashboard.inventoryValue' | translate }}</p>
-          <strong>{{ data.inventoryValue | currency: 'USD' : 'symbol' : '1.0-0' : language.current() }}</strong>
+          <strong>{{
+            data.inventoryValue | currency: 'USD' : 'symbol' : '1.0-0' : language.current()
+          }}</strong>
         </div>
       </article>
     </section>
@@ -70,7 +76,9 @@
             </div>
             <div class="right">
               <strong>{{ movement.type === 'in' ? '+' : '−' }}{{ movement.quantity }}</strong>
-              <small>{{ movement.createdAt | date: 'short' : undefined : language.current() }}</small>
+              <small>{{
+                movement.createdAt | date: 'short' : undefined : language.current()
+              }}</small>
             </div>
           </div>
         } @empty {

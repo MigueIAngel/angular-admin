@@ -5,8 +5,16 @@
   padding: 16px;
   box-sizing: border-box;
   background:
-    radial-gradient(circle at 15% 20%, color-mix(in srgb, var(--mat-sys-primary) 25%, transparent), transparent 45%),
-    radial-gradient(circle at 85% 80%, color-mix(in srgb, var(--mat-sys-tertiary) 25%, transparent), transparent 45%),
+    radial-gradient(
+      circle at 15% 20%,
+      color-mix(in srgb, var(--mat-sys-primary) 25%, transparent),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 85% 80%,
+      color-mix(in srgb, var(--mat-sys-tertiary) 25%, transparent),
+      transparent 45%
+    ),
     var(--mat-sys-surface-container-lowest);
   position: relative;
 }

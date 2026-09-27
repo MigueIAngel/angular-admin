@@ -21,19 +21,27 @@
     @if (movements.error()) {
       <div class="state">
         <p>{{ 'common.error' | translate }}</p>
-        <button mat-stroked-button (click)="movements.reload()">{{ 'common.retry' | translate }}</button>
+        <button mat-stroked-button (click)="movements.reload()">
+          {{ 'common.retry' | translate }}
+        </button>
       </div>
     } @else {
       <div class="table-wrapper">
         <table mat-table [dataSource]="movements.value()?.items ?? []">
           <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef>{{ 'movements.date' | translate }}</th>
-            <td mat-cell *matCellDef="let m">{{ m.createdAt | date: 'short' : undefined : language.current() }}</td>
+            <td mat-cell *matCellDef="let m">
+              {{ m.createdAt | date: 'short' : undefined : language.current() }}
+            </td>
           </ng-container>
           <ng-container matColumnDef="type">
             <th mat-header-cell *matHeaderCellDef>{{ 'movements.type' | translate }}</th>
             <td mat-cell *matCellDef="let m">
-              <span class="chip" [class.success]="m.type === 'in'" [class.danger]="m.type === 'out'">
+              <span
+                class="chip"
+                [class.success]="m.type === 'in'"
+                [class.danger]="m.type === 'out'"
+              >
                 {{ 'movements.' + m.type | translate }}
               </span>
             </td>
